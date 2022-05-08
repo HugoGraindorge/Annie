@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">quizz</string>
+    <string name="app_name">GetOut</string>
+    <string name="last_place">Bienvenue, %s!\nLa derniere sortie trouvé était %s</string>
+    <string name="septimeBio">C\'est sur les ruines de la Scène Bastille que les origines du Badaboum sont à trouver. Ouvert depuis 2013,
+        le lieu a vite su devenir un incontournable des nuits parisiennes avec sa programmation entre concerts de groupes de la scène indé et
+        soirées clubbing. Question cadre, le dancefloor de 400 places en met plein les mirettes avec ce plafond tout en néon, ce nouveau DJ booth
+        au sol et un système son de très haute qualité.\n\n
+        Pour ce qui est de la programmation musicale, on retrouve tout d\'abord des concerts en première partie de soirée
+        avec des artistes rock, électro ou pop chinés par Anne-Ying Braconnier. Quant à la partie club, c\'est l\'agence HAIKU,
+        à l\’origine d\’une tripotée de très bonnes soirées ces dernières années, qui s\'en occupe, ramenant du côté de la Bastille
+        des gros noms de la scène techno et house française et internationale.</string>
 </resources>

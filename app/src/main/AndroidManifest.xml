@@ -10,7 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Quizz">
         <activity
-            android:name=".controller.GameActivity"
+            android:name=".controller.SeptimeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controller.SearchActivity"
             android:exported="false" />
         <activity
             android:name=".controller.MainActivity"

@@ -1,6 +1,5 @@
 package com.example.quizz.model;
 
-import java.util.Collections;
 import java.util.List;
 
 public class QuestionBank {
@@ -10,8 +9,6 @@ public class QuestionBank {
 
     public QuestionBank(List<Question> questionList) {
         mQuestionList = questionList;
-
-        Collections.shuffle(mQuestionList);
     }
 
     public Question getCurrentQuestion() {

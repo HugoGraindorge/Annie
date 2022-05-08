@@ -1,9 +1,11 @@
 package com.example.quizz.controller;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,9 +16,12 @@ import com.example.quizz.R;
 import com.example.quizz.model.Question;
 import com.example.quizz.model.QuestionBank;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-public class GameActivity extends AppCompatActivity implements View.OnClickListener {
+public class SearchActivity extends AppCompatActivity implements View.OnClickListener {
+    public static final String BUNDLE_EXTRA_SCORE = "BUNDLE_EXTRA_SCORE";
 
     private TextView mQuestionTextView;
     private Button mAnswer1Button;
@@ -27,7 +32,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private QuestionBank mQuestionBank;
     private Question mCurrentQuestion;
     private int mRemainingQuestionCount;
-    private int mScore;
+    private String mResult;
+    private List<String> mQuestionResponseList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +55,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         mCurrentQuestion = mQuestionBank.getCurrentQuestion();
         mRemainingQuestionCount = mQuestionBank.getQuestionList().size();
         displayQuestion(mCurrentQuestion);
-        mScore = 0;
+        mResult = "";
+        mQuestionResponseList = new ArrayList();
     }
 
     @Override
@@ -68,34 +75,55 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             throw new IllegalStateException("Unknown clicked view : " + view);
         }
 
-        if (index == mQuestionBank.getCurrentQuestion().getAnswerIndex()) {
-            Toast.makeText(this, "Correct!", Toast.LENGTH_SHORT).show();
-            mScore++;
-        } else {
-            Toast.makeText(this, "Incorrect!", Toast.LENGTH_SHORT).show();
-        }
+        mQuestionResponseList.add(getResponse(mCurrentQuestion, index));
+        Toast.makeText(this, "Send !", Toast.LENGTH_SHORT).show();
 
         mRemainingQuestionCount--;
-
         if (mRemainingQuestionCount > 0) {
             mCurrentQuestion = mQuestionBank.getNextQuestion();
             displayQuestion(mCurrentQuestion);
         } else {
-            Toast.makeText(this, "Stop !", Toast.LENGTH_SHORT).show();
+            String[][] places = {
+                    {"le Septime", "Diner", "moins de 30€"},
+                    {"les buttes-chaumont", "Boire un verre", "gratuit"},
+                    {"la gallerie perrin", "Faire une sorie culturelle", "gratuit"},
+                    {"le badaboum", "Faire la fête toute la nuit", "ILLIMITE !"}
+            };
+
+            for(int i = 0; i < places.length; i++) {
+                    if(places[i][1].equals(mQuestionResponseList.get(0)) && places[i][2].equals(mQuestionResponseList.get(1))) {
+                        mResult = places[i][0];
+                    };
+            }
+
+            String message;
+            if (mResult.equals("")) {
+                message = "Aucun resultat trouvé";
+            }
+            else {
+                message = "On a trouvé " + mResult + " pour vous !";
+
+            }
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-            builder.setTitle("Well done!")
-                    .setMessage("Your score is " + mScore)
+            builder.setTitle("Resultat :")
+                    .setMessage(message)
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent();
+                            intent.putExtra(BUNDLE_EXTRA_SCORE, mResult);
+                            setResult(RESULT_OK, intent);
                             finish();
                         }
                     })
                     .create()
                     .show();
         }
+    }
 
+    private String getResponse(final Question question, int index) {
+        return question.getChoiceList().get(index);
     }
 
     private void displayQuestion(final Question question) {
@@ -108,38 +136,25 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     private QuestionBank generateQuestions() {
         Question question1 = new Question(
-                "Who is the creator of Android?",
+                "Vous cherchez un lieu pour... ?",
                 Arrays.asList(
-                        "Andy Rubin",
-                        "Steve Wozniak",
-                        "Jake Wharton",
-                        "Paul Smith"
-                ),
-                0
+                        "Diner",
+                        "Faire une sorie culturelle",
+                        "Boire un verre",
+                        "Faire la fête toute la nuit"
+                )
         );
 
         Question question2 = new Question(
-                "When did the first man land on the moon?",
+                "Quel est votre budget ?",
                 Arrays.asList(
-                        "1958",
-                        "1962",
-                        "1967",
-                        "1969"
-                ),
-                3
+                        "gratuit",
+                        "moins de 15€",
+                        "moins de 30€",
+                        "ILLIMITE !"
+                )
         );
 
-        Question question3 = new Question(
-                "What is the house number of The Simpsons?",
-                Arrays.asList(
-                        "42",
-                        "101",
-                        "666",
-                        "742"
-                ),
-                3
-        );
-
-        return new QuestionBank(Arrays.asList(question1, question2, question3));
+        return new QuestionBank(Arrays.asList(question1, question2));
     }
 }

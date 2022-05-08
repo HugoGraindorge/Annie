@@ -6,12 +6,10 @@ public class Question {
 
     private final String mQuestion;
     private final List<String> mChoiceList;
-    private final int mAnswerIndex;
 
-    public Question(String question, List<String> choiceList, int answerIndex) {
+    public Question(String question, List<String> choiceList) {
         mQuestion = question;
         mChoiceList = choiceList;
-        mAnswerIndex = answerIndex;
     }
 
     public String getQuestion() {
@@ -20,9 +18,5 @@ public class Question {
 
     public List<String> getChoiceList() {
         return mChoiceList;
-    }
-
-    public int getAnswerIndex() {
-        return mAnswerIndex;
     }
 }
